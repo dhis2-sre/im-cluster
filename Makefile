@@ -12,7 +12,7 @@ init-storage:
 clean-storage:
 	rm -rf k3s-storage/*
 
-destroy-cluster:
+shutdown-cluster:
 	docker compose down
 
 clean:
@@ -25,4 +25,4 @@ cluster:
 
 	@echo "export KUBECONFIG=$(PWD)/k3s.yaml"
 
-.PHONY: clean copy-kubernetes-configuration init-storage clean-storage cluster destroy-cluster
+.PHONY: clean copy-kubernetes-configuration init-storage clean-storage cluster shutdown-cluster
