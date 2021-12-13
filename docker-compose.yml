@@ -1,0 +1,30 @@
+version: "3.6"
+services:
+  kubernetes:
+    image: rancher/k3s:v1.21.3-k3s1
+    privileged: true
+    command: server
+    tmpfs:
+      - /run
+      - /var/run
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 65535
+        hard: 65535
+    ports:
+      - "6443:6443"
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./k3s-storage:/var/lib/rancher/k3s/storage:Z
+    environment:
+      K3S_KUBECONFIG_OUTPUT: /tmp/kubernetes/k3s.yaml
+      K3S_KUBECONFIG_MODE: 666
+
+volumes:
+  kubernetes-config: { }
+
+networks:
+  default:
+    name: im-network
