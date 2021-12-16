@@ -20,9 +20,12 @@ clean:
 
 cluster:
 	docker compose up -d kubernetes
-	timeout 20s bash -c "until docker compose cp kubernetes:/tmp/kubernetes/k3s.yaml .; do echo \"Waiting for kubernetes...\" && sleep 1; done;"
-	timeout 1m bash -c "until kubectl --kubeconfig ./k3s.yaml get node; do sleep 1; done"
-
+	timeout 20s bash -c "until docker compose cp kubernetes:/tmp/kubernetes/k3s.yaml .; do echo Waiting for Kubernetes configuration... && sleep 1; done;"
+	timeout 20s bash -c "until kubectl --kubeconfig ./k3s.yaml wait --for=condition=ready node -l node-role.kubernetes.io/master=true; do echo Waiting for master node... && sleep 1; done;"
+	kubectl --kubeconfig ./k3s.yaml get node
 	@echo "export KUBECONFIG=$(PWD)/k3s.yaml"
+
+logs:
+	docker compose logs kubernetes -f
 
 .PHONY: clean copy-kubernetes-configuration init-storage clean-storage cluster shutdown-cluster
