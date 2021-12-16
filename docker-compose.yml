@@ -22,9 +22,6 @@ services:
       K3S_KUBECONFIG_OUTPUT: /tmp/kubernetes/k3s.yaml
       K3S_KUBECONFIG_MODE: 666
 
-volumes:
-  kubernetes-config: { }
-
 networks:
   default:
     name: im-network
